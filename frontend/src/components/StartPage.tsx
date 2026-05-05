@@ -7,7 +7,10 @@ export function StartPageComponent({ content }: any) {
       <Stack gap="md">
         <Title>{content.heading?.value}</Title>
         <div dangerouslySetInnerHTML={{ __html: content.mainBody?.value }} />
-        <ContentArea items={content.mainContentArea?.value} />
+        <Title order={3} >Lernziele</Title>
+        <Stack gap="md">
+          <ContentArea items={content.mainContentArea?.value} />
+        </Stack>
       </Stack>
     </Container>
   );

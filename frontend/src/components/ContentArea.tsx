@@ -11,10 +11,10 @@ export async function ContentArea({ items }: any) {
     );
 
     return (
-        <div>
+        <>
             {resolved.map((block, i) => (
                 <RenderBlock key={i} block={block} />
             ))}
-        </div>
+        </>
     );
 }

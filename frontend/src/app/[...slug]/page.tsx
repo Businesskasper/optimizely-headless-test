@@ -1,4 +1,4 @@
-import { Container, Title } from "@mantine/core";
+import { notFound } from "next/navigation";
 import { getContentByUrl } from "@/lib/optimizely";
 import { RenderPage } from "@/components/RenderPage";
 
@@ -8,13 +8,7 @@ export default async function Page({ params }: any) {
 
   const content = await getContentByUrl(url);
 
-  if (!content) {
-    return (
-      <Container py="xl">
-        <Title>404 Not Found</Title>
-      </Container>
-    );
-  }
+  if (!content) notFound();
 
   return <RenderPage content={content} />;
 }
