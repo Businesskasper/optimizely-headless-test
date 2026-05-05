@@ -1,8 +1,10 @@
 const API = process.env.OPTIMIZELY_API_URL!;
 
 export async function getStartPage() {
+    console.log('`${API}/site`', `${API}/site`)
     const res = await fetch(`${API}/site`, { next: { revalidate: 60 } });
     const data = await res.json();
+    console.log('data', data)
 
     const startPageId = data[0].contentRoots.startPage.id;
     
