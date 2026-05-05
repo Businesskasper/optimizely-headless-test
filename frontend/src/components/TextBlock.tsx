@@ -1,11 +1,12 @@
-export function TextBlock({ block }: any) {
+import { Paper, Title, Stack } from "@mantine/core";
 
+export function TextBlock({ block }: any) {
   return (
-    <section>
-      <h2>{block.heading.value}</h2>
-      <div
-        dangerouslySetInnerHTML={{ __html: block.text?.value }}
-      />
-    </section>
+    <Paper p="md" withBorder>
+      <Stack gap="sm">
+        <Title order={2}>{block.heading.value}</Title>
+        <div dangerouslySetInnerHTML={{ __html: block.text?.value }} />
+      </Stack>
+    </Paper>
   );
 }

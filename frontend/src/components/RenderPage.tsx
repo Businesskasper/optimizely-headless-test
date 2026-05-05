@@ -1,3 +1,4 @@
+import { Text } from "@mantine/core";
 import { StartPageComponent } from "./StartPage";
 
 export function RenderPage({ content }: any) {
@@ -5,5 +6,5 @@ export function RenderPage({ content }: any) {
     return <StartPageComponent content={content} />;
   }
 
-  return <div>Unknown page type</div>;
+  return <Text c="dimmed">Unknown page type</Text>;
 }

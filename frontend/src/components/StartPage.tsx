@@ -1,17 +1,14 @@
+import { Container, Title, Stack } from "@mantine/core";
 import { ContentArea } from "./ContentArea";
 
 export function StartPageComponent({ content }: any) {
   return (
-    <main>
-      <h1>{content.heading?.value}</h1>
-
-      <div
-        dangerouslySetInnerHTML={{
-          __html: content.mainBody?.value,
-        }}
-      />
-
-      <ContentArea items={content.mainContentArea?.value} />
-    </main>
+    <Container size="md" py="xl">
+      <Stack gap="md">
+        <Title>{content.heading?.value}</Title>
+        <div dangerouslySetInnerHTML={{ __html: content.mainBody?.value }} />
+        <ContentArea items={content.mainContentArea?.value} />
+      </Stack>
+    </Container>
   );
 }
