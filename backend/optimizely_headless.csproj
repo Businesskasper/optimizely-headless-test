@@ -17,11 +17,12 @@
     <PackageReference Include="EPiServer.Cms.UI" Version="12.34.3" />
     <PackageReference Include="EPiServer.Cms.UI.Core" Version="12.34.3" />
     <PackageReference Include="EPiServer.Cms.UI.AspNetIdentity" Version="12.34.3" />
+    <!-- Content Delivery API to enable headless mode -->
     <PackageReference Include="EPiServer.ContentDeliveryApi.Cms" Version="3.12.6" />
     <PackageReference Include="EPiServer.ContentDeliveryApi.Core" Version="3.12.6" />
+    <!-- OIDC to generate credentials for Next.js -->
     <PackageReference Include="EPiServer.OpenIDConnect" Version="3.12.6" />
     <PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.12.6" />
-    <!-- <PackageReference Include="EPiServer.ContentDeliveryApi.OAuth" Version="2.19.1" /> -->
   </ItemGroup>
   
   <ItemGroup>
