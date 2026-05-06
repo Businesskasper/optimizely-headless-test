@@ -1,8 +1,12 @@
 import { notFound } from "next/navigation";
-import { getContentByUrl } from "@/lib/optimizely";
 import { RenderPage } from "@/components/RenderPage";
+import { getContentByUrl } from "@/lib/optimizely";
 
-export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string[] }>;
+}) {
   const { slug } = await params;
   const url = `/${slug.join("/")}`;
 

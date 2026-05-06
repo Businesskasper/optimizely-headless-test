@@ -1,8 +1,9 @@
 import { Text } from "@mantine/core";
-import { StartPageComponent } from "./StartPage";
+import type { ContentItem } from "@/lib/optimizely";
+import { isStartPage, StartPageComponent } from "./StartPageComponent";
 
-export function RenderPage({ content }: any) {
-  if (content.contentType?.includes("StartPage")) {
+export function RenderPage({ content }: { content: ContentItem }) {
+  if (isStartPage(content)) {
     return <StartPageComponent content={content} />;
   }
 

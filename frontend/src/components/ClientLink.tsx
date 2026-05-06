@@ -3,5 +3,5 @@
 import Link from "next/link";
 
 export const ClientLink = (props: Parameters<typeof Link>[0]) => {
- return <Link {...props} />
-}
+  return <Link {...props} />;
+};
