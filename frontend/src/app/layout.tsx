@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "@mantine/core/styles.css";
 import "./globals.css";
+import { Container, Divider } from "@mantine/core";
+import { NavBar } from "@/components/NavBar";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
@@ -14,7 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Container size="md" py="xl">
+            <NavBar />
+            <Divider mb="lg" />
+            {children}
+          </Container>
+        </Providers>
       </body>
     </html>
   );
