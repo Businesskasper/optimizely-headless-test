@@ -1,16 +1,28 @@
+import { getHttpErrorSummary, isDevEnv } from "./dev-utils";
 import { hasKey, isObject, isValueArray } from "./object-utils";
 
 const API = process.env.OPTIMIZELY_API_URL!;
+const CMS_BASE = API.replace(/\/api\/.*/, "");
+const DEFAULT_LANG = "en";
 
 async function getSite(): Promise<SiteDefinition> {
-  const res = await fetch(`${API}/site`, { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error(`Optimizely API ${res.status}: ${res.url}`);
+  const req = new Request(`${API}/site`);
+  const res = await fetch(req, {
+    headers: { "Accept-Language": "en" },
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    const err = await logAndGetError(req, res);
+    throw err;
+  }
 
   const data = await res.json();
+  if (isDevEnv()) console.log("getSite", data);
+
   const site = data?.[0];
   if (!isSiteDefinition(site))
     throw new Error("Result is not a valid SiteDefintion");
-  console.log("getSite", site);
 
   return site;
 }
@@ -25,29 +37,87 @@ export async function getStartPage(): Promise<ContentItem> {
 }
 
 export async function getContentById(id: number): Promise<ContentItem> {
-  const res = await fetch(`${API}/content/${id}`, { next: { revalidate: 60 } });
-  if (!res.ok) throw new Error(`Optimizely API ${res.status}: ${res.url}`);
+  const req = new Request(`${API}/content/${id}`, {
+    headers: { "Accept-Language": "en" },
+    next: { revalidate: 60 },
+  });
+  const res = await fetch(req);
+
+  if (!res.ok) {
+    const err = await logAndGetError(req, res);
+    throw err;
+  }
 
   const data = await res.json();
+  if (isDevEnv()) console.log("getContentById", data);
+
   if (!isContentItem(data))
     throw new Error(`Result is not a valid ContentItem`);
-  console.log("getContentById", data);
 
   return data;
 }
 
-export async function getContentByUrl(url: string): Promise<ContentItem> {
-  const res = await fetch(`${API}/content?url=${encodeURIComponent(url)}`, {
+export async function getChildrenById(id: number): Promise<Array<ContentItem>> {
+  const req = new Request(`${API}/content/${id}/children`, {
+    headers: { "Accept-Language": "en" },
     next: { revalidate: 60 },
   });
-  if (!res.ok) throw new Error(`Optimizely API ${res.status}: ${res.url}`);
+  const res = await fetch(req);
+
+  if (!res.ok) {
+    const err = await logAndGetError(req, res);
+    throw err;
+  }
 
   const data = await res.json();
-  if (!isContentItem(data?.[0]))
-    throw new Error(`Result is not a valid ContentItem`);
-  console.log("getContentByUrl", data);
+  if (isDevEnv()) console.log("getContentById", data);
 
-  return data?.[0] ?? null;
+  if (!isValueArray(data) || !data.every(isContentItem))
+    throw new Error(`Result is not a valid Array of ContentItem`);
+
+  return data;
+}
+
+export async function getContentByUrl(
+  url: string,
+): Promise<ContentItem | null> {
+  const cmsUrl = `${CMS_BASE}/${DEFAULT_LANG}${url}`;
+
+  const req = new Request(
+    `${API}/content?ContentUrl=${encodeURIComponent(cmsUrl)}`,
+    {
+      headers: { "Accept-Language": "en" },
+      next: { revalidate: 60 },
+    },
+  );
+  const res = await fetch(req);
+
+  if (!res.ok) {
+    const err = await logAndGetError(req, res);
+    throw err;
+  }
+
+  const data = await res.json();
+  if (isDevEnv()) console.log("getContentByUrl", data);
+
+  const contentItem = data?.[0];
+  if (contentItem && !isContentItem(contentItem))
+    throw new Error(`Result is not a valid ContentItem`);
+
+  return contentItem ?? null;
+}
+
+// Strips the language prefix (/en/, /de/, …), since frontend URLs are language-agnostic
+export function cleanContentUrl(url: string) {
+  return new URL(url).pathname.replace(/^\/[a-z]{2}(\/|$)/, "/");
+}
+
+async function logAndGetError(req: Request, res: Response): Promise<Error> {
+  if (isDevEnv()) {
+    const summary = await getHttpErrorSummary(req, res);
+    console.log("Error summary", summary);
+  }
+  return new Error(`Optimizely API ${res.status}: ${res.url}`);
 }
 
 const isContentItem = (value: unknown): value is ContentItem => {
@@ -105,6 +175,11 @@ export type ContentLanguage = {
 
 export type ContentLongString = {
   propertyDataType: "PropertyLongString";
+  value: string;
+};
+
+export type ContentDate = {
+  propertyDataType: "PropertyDate";
   value: string;
 };
 
