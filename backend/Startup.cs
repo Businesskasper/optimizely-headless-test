@@ -19,6 +19,8 @@ public class Startup(IWebHostEnvironment webHostingEnvironment)
             services.Configure<SchedulerOptions>(options => options.Enabled = false);
         }
 
+        services.AddLogging();
+
         services
             .AddCmsAspNetIdentity<ApplicationUser>()
             .AddCms()
@@ -67,6 +69,24 @@ public class Startup(IWebHostEnvironment webHostingEnvironment)
         }
 
         app.UseStaticFiles();
+
+        if (env.IsDevelopment())
+        {
+            app.Use(async (context, next) =>
+            {
+                var loggerFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
+                var logger = loggerFactory.CreateLogger("RequestLogging");
+                if (logger != null)
+                {
+                    logger.LogDebug("Requested {Url}", context.Request.Path);
+                    foreach (var header in context.Request.Headers)
+                        logger.LogDebug("  {Key}: {Value}", header.Key, header.Value);
+                }
+
+                await next();
+            });
+        }
+
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
