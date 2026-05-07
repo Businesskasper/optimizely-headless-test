@@ -43,4 +43,3 @@ New content types are added as C# classes in `backend/Models/`. Rebuilding the b
 ## Next steps
 
 - See [SETUP.md](SETUP.md) to build and run the project from scratch
-- See [LEARNING_PLAN.md](LEARNING_PLAN.md) for guided learning milestones

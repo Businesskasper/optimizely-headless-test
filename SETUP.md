@@ -130,8 +130,7 @@ npm run dev
 ## CMS configuration
 
 1. Create a Start Page: **Edit → Create Content → New Page**. Name it `Start Page`, add some content, and publish it.
-2. Create a website entry: **Admin → Settings → Manage Website → Create Website**
-   - URL: `http://localhost:3000`
-   - Host: `localhost:3000` / `http` / `Primary`
-   - Culture: leave empty
+2. Create a website entry: **Admin → Config → Manage Websites → Create Website**
+   - URL: `http://localhost:3000` — sets the base URL for content links in the CDA response
    - Start Page: select the page created above
+   - Add a host: `localhost:5000` / `http` / **Edit** — keeps the CMS editing UI on the backend
