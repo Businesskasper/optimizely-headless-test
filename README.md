@@ -6,7 +6,7 @@ The project scenario is a blog site.
 
 See [SETUP.md](SETUP.md) for initial project setup from scratch.
 
-## Architecture
+## Project structure
 
 ```
 optimizely-headless-test/
@@ -30,10 +30,10 @@ New content types are added as C# classes in `backend/Models/`. Rebuilding the b
 ## How content flows
 
 1. Editor creates or edits content in the CMS admin UI (`/episerver/cms`)
-2. Content is stored in SQL Server by Optimizely CMS
+2. Content is stored in SQL Server by Optimizely
 3. A visitor requests a URL -> Next.js calls `GET /api/content?url=...`
-4. The Content Delivery API serialises the matching content type to JSON
-5. Next.js renders the matching component tree server-side (ISR (wip), 60 s revalidation)
+4. The Content Delivery API serialises and returns the content type
+5. Next.js renders the matching component tree server side
 
 ## Key files
 
