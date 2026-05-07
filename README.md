@@ -2,6 +2,8 @@
 
 A headless CMS setup using Optimizely CMS 12 as the backend and Next.js 16 as the frontend, connected via the Content Delivery API. The project scenario is a blog site.
 
+See [SETUP.md](SETUP.md) for initial project setup from scratch.
+
 ## Architecture
 
 ```
@@ -17,6 +19,8 @@ The two sides are fully decoupled. The frontend never touches the CMS database �
 | Class | CMS type | Properties |
 |---|---|---|
 | `StartPage` | Page | `Heading` (string), `MainBody` (XhtmlString), `MainContentArea` (ContentArea) |
+| `BlogListingPage` | Page | `Heading` (string), `Intro` (XhtmlString) |
+| `ArticlePage` | Page | `Title` (string), `Author` (string), `PublishedDate` (DateTime), `Body` (XhtmlString) |
 | `TextBlock` | Block | `Heading` (string), `Text` (XhtmlString) |
 
 New content types are added as C# classes in `backend/Models/`. Rebuilding the backend registers them automatically.
@@ -36,10 +40,8 @@ New content types are added as C# classes in `backend/Models/`. Rebuilding the b
 | `frontend/src/lib/optimizely.ts` | All API calls to the Content Delivery API |
 | `frontend/src/app/page.tsx` | Home page — fetches the CMS start page |
 | `frontend/src/app/[...slug]/page.tsx` | Catch-all route — resolves any URL to CMS content |
+| `frontend/src/components/NavBar.tsx` | Navigation bar — fetches start page children from the CMS |
 | `frontend/src/components/RenderPage.tsx` | Dispatches to the right page component by content type |
 | `frontend/src/components/RenderBlock.tsx` | Dispatches to the right block component by content type |
-| `frontend/src/components/ContentArea.tsx` | Resolves content references in parallel and renders blocks |
+| `frontend/src/components/ContentAreaRenderer.tsx` | Resolves content references in parallel and renders blocks |
 
-## Next steps
-
-- See [SETUP.md](SETUP.md) to build and run the project from scratch
