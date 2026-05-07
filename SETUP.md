@@ -128,7 +128,7 @@ npm run dev
 
 ## CMS configuration
 
-1. Create a Start Page: **Edit -> Create Content -> New Page**. Name it `Start Page`, add some content, and publish it.
+1. Add a Start Page to the backend project as in `backend/Models/Start Page`. After relaunching the backend, create a Start Page in the admin panel: **Edit -> Create Content -> New Page**. Name it `Start Page`, add some content, and publish it.
 2. Create a website entry: **Admin -> Config -> Manage Websites -> Create Website**
    - URL: `http://localhost:3000` - sets the base URL for content links in the Content Delivery API response
    - Start Page: select the page created above
