@@ -8,7 +8,10 @@ export default async function Page({
   params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
+  // const cleaned = slug[0] === "en" ? slug.slice(1) : slug;
   const url = `/${slug.join("/")}`;
+
+  if (slug.at(-1)?.includes(".")) notFound();
 
   const content = await getContentByUrl(url);
 
