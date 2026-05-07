@@ -1,5 +1,5 @@
+import { Anchor, Container, Text, Title } from "@mantine/core";
 import { ClientLink } from "@/components/ClientLink";
-import { Container, Title, Text, Anchor } from "@mantine/core";
 
 export default function NotFound() {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Container, Title, Text, Button } from "@mantine/core";
+import { Button, Container, Text, Title } from "@mantine/core";
 
 export default function Error({
   error,
