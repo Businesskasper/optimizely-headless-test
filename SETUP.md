@@ -1,13 +1,12 @@
 # Setup
 
-Step-by-step guide to build and run this project from scratch.
+Guide to setup Optimizely CMS headless with Next.js.
 
 ## Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
 - Node.js 22
-- SQL Server 2019 with a default instance (`MSSQLSERVER`)
-- Git
+- SQL Server 2019 with default instance (`MSSQLSERVER`)
 
 ## Backend setup
 
@@ -31,7 +30,7 @@ In `*.csproj`, set:
 
 ### 4. Configure the connection string
 
-In `appsettings.Development.json`, update the connection string and enable automatic schema creation:
+In `appsettings.Development.json`, update the connection string to use the installed SQL Server instance and enable automatic schema creation:
 
 ```json
 "ConnectionStrings": {
@@ -63,7 +62,7 @@ Add these to `*.csproj` (the generated template does not include all of them):
 <PackageReference Include="EPiServer.OpenIDConnect.UI" Version="3.12.6" />
 ```
 
-Then configure all packages in `Startup.cs`.
+Then configure all packages in `Startup.cs` as in this project.
 
 ### 6. Switch to HTTP in launchSettings.json
 
@@ -75,7 +74,7 @@ The generated template configures HTTPS only. Node.js does not trust the dotnet 
 
 ## Database setup
 
-Create an empty SQL Server database named `optimizely_headless` on the default instance. The schema is created automatically on first run (`CreateDatabaseSchema: true`).
+Create an empty SQL database named `optimizely_headless` on the default instance. The schema is created automatically on first run (`CreateDatabaseSchema: true`).
 
 ## Frontend setup
 
@@ -100,7 +99,7 @@ Create `frontend/.env.local`:
 OPTIMIZELY_API_URL=http://localhost:5000/api/episerver/v3.0
 ```
 
-This points the frontend at the Content Delivery API served by the backend.
+This points the frontend to the Content Delivery API served by the backend.
 
 ## Running the project
 
@@ -110,8 +109,8 @@ This points the frontend at the Content Delivery API served by the backend.
 dotnet run
 ```
 
-→ CMS admin UI: `http://localhost:5000/episerver/cms`  
-→ Content Delivery API: `http://localhost:5000/api`
+-> CMS admin UI: `http://localhost:5000/episerver/cms`  
+-> Content Delivery API: `http://localhost:5000/api`
 
 **Frontend** (from `frontend/`):
 
@@ -119,18 +118,18 @@ dotnet run
 npm run dev
 ```
 
-→ `http://localhost:3000`
+-> `http://localhost:3000`
 
 ## First-run setup
 
 1. Go to `http://localhost:5000/util/register` and create an admin root user
 2. Verify the Content Delivery API is up: `http://localhost:5000/api/episerver/v3.0/content` (should return an empty array)
-3. Open the CMS admin panel: `http://localhost:5000/episerver/cms`
+3. Verify the CMS admin panel is reachable: `http://localhost:5000/episerver/cms`
 
 ## CMS configuration
 
-1. Create a Start Page: **Edit → Create Content → New Page**. Name it `Start Page`, add some content, and publish it.
-2. Create a website entry: **Admin → Config → Manage Websites → Create Website**
-   - URL: `http://localhost:3000` — sets the base URL for content links in the CDA response
+1. Create a Start Page: **Edit -> Create Content -> New Page**. Name it `Start Page`, add some content, and publish it.
+2. Create a website entry: **Admin -> Config -> Manage Websites -> Create Website**
+   - URL: `http://localhost:3000` - sets the base URL for content links in the Content Delivery API response
    - Start Page: select the page created above
-   - Add a host: `localhost:5000` / `http` / **Edit** — keeps the CMS editing UI on the backend
+   - Add a host: `localhost:5000` / `http` - keeps the CMS editing UI on the backend
