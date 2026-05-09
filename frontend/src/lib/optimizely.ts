@@ -36,8 +36,9 @@ export async function getStartPage(): Promise<ContentItem> {
   return getContentById(startPageId);
 }
 
-export async function getContentById(id: number): Promise<ContentItem> {
-  const req = new Request(`${API}/content/${id}`, {
+export async function getContentById(id: number, expand = false): Promise<ContentItem> {
+  const url = expand ? `${API}/content/${id}?expand=*` : `${API}/content/${id}`;
+  const req = new Request(url, {
     headers: { "Accept-Language": "en" },
     next: { revalidate: 60 },
   });
@@ -151,7 +152,7 @@ export type SiteLanguage = {
 export type ContentLink = {
   id: number;
   workId: number;
-  expanded: boolean | null;
+  expanded: ContentItem | null;
   guidValue: string;
   providerName: string | null;
   url: string;
@@ -186,6 +187,11 @@ export type ContentDate = {
 export type ContentHtmlString = {
   propertyDataType: "PropertyXhtmlString";
   value: string;
+};
+
+export type ContentFileReference = {
+  propertyDataType: "PropertyContentReference";
+  value: ContentLink;
 };
 
 export type ContentAreaValue = {

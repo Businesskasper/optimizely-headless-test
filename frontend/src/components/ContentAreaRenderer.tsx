@@ -9,7 +9,7 @@ export async function ContentAreaRenderer({
   if (!items || items.length === 0) return null;
 
   const resolved = await Promise.all(
-    items.map((item) => getContentById(item.contentLink.id)),
+    items.map((item) => getContentById(item.contentLink.id, true)),
   );
 
   return (
