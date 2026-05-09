@@ -11,6 +11,5 @@ namespace headless_cms.Models.Pages
         public virtual string Heading { get; set; }
 
         public virtual XhtmlString Intro { get; set; }
-
     }
 }

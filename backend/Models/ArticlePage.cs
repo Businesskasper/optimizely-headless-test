@@ -13,5 +13,8 @@ namespace headless_cms.Models.Pages
         public virtual string Author { get; set; }
 
         public virtual XhtmlString Body { get; set; }
+
+        [AllowedTypes(AllowedTypes = new[] { typeof(ImageBlock), typeof(TextBlock), typeof(QuoteBlock) })]
+        public virtual ContentArea MainContentArea { get; set; }
     }
 }
