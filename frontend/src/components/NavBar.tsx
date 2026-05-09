@@ -1,10 +1,10 @@
-import { Group } from "@mantine/core";
-import Link from "next/link";
+import { Anchor, Group } from "@mantine/core";
 import {
   cleanContentUrl,
   getChildrenById,
   getStartPage,
 } from "@/lib/optimizely";
+import { ClientLink } from "./ClientLink";
 
 export const NavBar = async () => {
   const startPage = await getStartPage();
@@ -12,11 +12,17 @@ export const NavBar = async () => {
 
   return (
     <Group>
-      <Link href="/">Home</Link>
+      <Anchor component={ClientLink} href="/">
+        Home
+      </Anchor>
       {children.map((child) => (
-        <Link key={child.contentLink.id} href={cleanContentUrl(child.url)}>
+        <Anchor
+          component={ClientLink}
+          key={child.contentLink.id}
+          href={cleanContentUrl(child.url)}
+        >
           {child.name}
-        </Link>
+        </Anchor>
       ))}
     </Group>
   );
