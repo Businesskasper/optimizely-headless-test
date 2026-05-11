@@ -16,6 +16,13 @@ export function RenderBlock({ block }: { block: ContentItem }) {
   if (isImageBlock(block)) {
     return <ImageBlockRenderer block={block} />;
   }
+  // if (isNavigationBlock(block)) {
+  //   return (
+  //     <Stack>
+  //       <NavigationBlockRenderer block={block} />
+  //     </Stack>
+  //   );
+  // }
 
   return <div>Unknown block: {block.contentType?.join(", ")}</div>;
 }

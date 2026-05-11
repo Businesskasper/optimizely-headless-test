@@ -1,18 +1,21 @@
-import { Anchor, Stack, Title } from "@mantine/core";
+import { Stack, Title } from "@mantine/core";
 import { arrayStartsWith } from "@/lib/object-utils";
 import {
   type ContentHtmlString,
   type ContentItem,
   type ContentLongString,
-  cleanContentUrl,
-  getChildrenById,
+  type ContentReference,
+  getContentById,
 } from "@/lib/optimizely";
-import { isBlogEntryPage } from "./BlogEntryComponent";
-import { ClientLink } from "./ClientLink";
+import {
+  isNavigationBlock,
+  NavigationBlockRenderer,
+} from "./NavigationBlockRenderer";
 
 export type BlogListPage = ContentItem & {
   heading: ContentLongString;
   intro: ContentHtmlString;
+  entryNavigation: ContentReference;
 };
 
 export const isBlogListPage = (item: ContentItem): item is BlogListPage =>
@@ -23,28 +26,32 @@ export async function BlogListPageComponent({
 }: {
   content: BlogListPage;
 }) {
-  const children = await getChildrenById(content.contentLink.id);
-  const blogEntries = children.filter(isBlogEntryPage);
-
   return (
     <Stack gap="md">
       <Title>{content.heading?.value}</Title>
       <div dangerouslySetInnerHTML={{ __html: content.intro?.value ?? "" }} />
-      <Stack gap="md">
-        {blogEntries
-          .sort((a, b) => b.publishedDate.value.localeCompare(a.publishedDate.value))
-          .map((blogEntry) => (
-            <Anchor
-              key={blogEntry.contentLink.id}
-              component={ClientLink}
-              href={cleanContentUrl(blogEntry.contentLink.url)}
-              mt="md"
-              display="block"
-            >
-              {blogEntry.title.value}
-            </Anchor>
-          ))}
-      </Stack>
+      <BlogListingPageNavigation
+        entryNavigationId={content.entryNavigation?.value?.id || null}
+      />
+    </Stack>
+  );
+}
+
+async function BlogListingPageNavigation({
+  entryNavigationId,
+}: {
+  entryNavigationId: number | null;
+}) {
+  if (!entryNavigationId) return null;
+
+  const entryNavigation = await getContentById(entryNavigationId);
+  if (!isNavigationBlock(entryNavigation))
+    throw new Error(
+      `ContentItem "${entryNavigation.contentLink.id}" is not a valid NavigationBlock`,
+    );
+  return (
+    <Stack gap="md">
+      <NavigationBlockRenderer block={entryNavigation} />
     </Stack>
   );
 }

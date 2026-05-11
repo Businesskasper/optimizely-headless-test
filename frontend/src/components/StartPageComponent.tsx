@@ -5,6 +5,7 @@ import type {
   ContentHtmlString,
   ContentItem,
   ContentLongString,
+  ContentReference,
 } from "@/lib/optimizely";
 import { ContentAreaRenderer } from "./ContentAreaRenderer";
 
@@ -12,6 +13,7 @@ export type StartPage = ContentItem & {
   heading: ContentLongString;
   mainBody: ContentHtmlString;
   mainContentArea: ContentArea;
+  topNavigation: ContentReference;
 };
 
 export const isStartPage = (item: ContentItem): item is StartPage =>

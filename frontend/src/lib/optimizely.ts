@@ -9,7 +9,8 @@ async function getSite(): Promise<SiteDefinition> {
   const req = new Request(`${API}/site`);
   const res = await fetch(req, {
     headers: { "Accept-Language": "en" },
-    next: { revalidate: 60 },
+    cache: "force-cache",
+    // next: { revalidate: 60 },
   });
 
   if (!res.ok) {
@@ -36,11 +37,15 @@ export async function getStartPage(): Promise<ContentItem> {
   return getContentById(startPageId);
 }
 
-export async function getContentById(id: number, expand = false): Promise<ContentItem> {
+export async function getContentById(
+  id: number,
+  expand = false,
+): Promise<ContentItem> {
   const url = expand ? `${API}/content/${id}?expand=*` : `${API}/content/${id}`;
   const req = new Request(url, {
     headers: { "Accept-Language": "en" },
-    next: { revalidate: 60 },
+    cache: "force-cache",
+    // next: { revalidate: 60 },
   });
   const res = await fetch(req);
 
@@ -61,7 +66,8 @@ export async function getContentById(id: number, expand = false): Promise<Conten
 export async function getChildrenById(id: number): Promise<Array<ContentItem>> {
   const req = new Request(`${API}/content/${id}/children`, {
     headers: { "Accept-Language": "en" },
-    next: { revalidate: 60 },
+    cache: "force-cache",
+    // next: { revalidate: 60 },
   });
   const res = await fetch(req);
 
@@ -88,7 +94,8 @@ export async function getContentByUrl(
     `${API}/content?ContentUrl=${encodeURIComponent(cmsUrl)}`,
     {
       headers: { "Accept-Language": "en" },
-      next: { revalidate: 60 },
+      cache: "force-cache",
+      // next: { revalidate: 60 },
     },
   );
   const res = await fetch(req);
@@ -110,7 +117,10 @@ export async function getContentByUrl(
 
 // Strips the language prefix (/en/, /de/, …), since frontend URLs are language-agnostic
 export function cleanContentUrl(url: string) {
-  return new URL(url).pathname.replace(/^\/[a-z]{2}(\/|$)/, "/");
+  return cleanContentUrlSegment(new URL(url).pathname);
+}
+export function cleanContentUrlSegment(urlSegment: string) {
+  return urlSegment.replace(/^\/[a-z]{2}(\/|$)/, "/");
 }
 
 async function logAndGetError(req: Request, res: Response): Promise<Error> {
@@ -179,6 +189,11 @@ export type ContentLongString = {
   value: string;
 };
 
+export type ContentUrl = {
+  propertyDataType: "PropertyUrl";
+  value: string;
+};
+
 export type ContentDate = {
   propertyDataType: "PropertyDate";
   value: string;
@@ -190,6 +205,11 @@ export type ContentHtmlString = {
 };
 
 export type ContentFileReference = {
+  propertyDataType: "PropertyContentReference";
+  value: ContentLink;
+};
+
+export type ContentReference = {
   propertyDataType: "PropertyContentReference";
   value: ContentLink;
 };

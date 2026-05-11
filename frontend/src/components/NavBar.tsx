@@ -1,29 +1,26 @@
-import { Anchor, Group } from "@mantine/core";
+import { Group } from "@mantine/core";
+import { getContentById, getStartPage } from "@/lib/optimizely";
 import {
-  cleanContentUrl,
-  getChildrenById,
-  getStartPage,
-} from "@/lib/optimizely";
-import { ClientLink } from "./ClientLink";
+  isNavigationBlock,
+  NavigationBlockRenderer,
+} from "./NavigationBlockRenderer";
+import { isStartPage } from "./StartPageComponent";
 
 export const NavBar = async () => {
   const startPage = await getStartPage();
-  const children = await getChildrenById(startPage.contentLink.id);
+  if (!isStartPage(startPage)) throw new Error("No start page found");
+
+  if (!startPage.topNavigation.value.id) return null;
+
+  const topNavigation = await getContentById(startPage.topNavigation.value.id);
+  if (!isNavigationBlock(topNavigation))
+    throw new Error(
+      `ContentItem "${topNavigation.contentLink.id}" is not a valid NavigationBlock`,
+    );
 
   return (
     <Group>
-      <Anchor component={ClientLink} href="/">
-        Home
-      </Anchor>
-      {children.map((child) => (
-        <Anchor
-          component={ClientLink}
-          key={child.contentLink.id}
-          href={cleanContentUrl(child.url)}
-        >
-          {child.name}
-        </Anchor>
-      ))}
+      <NavigationBlockRenderer block={topNavigation} />
     </Group>
   );
 };
