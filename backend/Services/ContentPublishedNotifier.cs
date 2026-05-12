@@ -21,7 +21,7 @@ public class ContentPublishedNotifier : IInitializableModule
 
         _logger.LogInformation("Register ContentPublishedNotifier");
 
-        var contentEvents = context.Locate.ContentEvents();
+        var contentEvents = context.Locate.ContentEvents() ?? throw new Exception("No ContentEvents in InitializationEngine");
         contentEvents.PublishedContent += _onContentPublished;
         _eventsAttached = true;
     }
@@ -33,7 +33,7 @@ public class ContentPublishedNotifier : IInitializableModule
         _logger.LogInformation("Unregister ContentPublishedNotifier");
 
         var contentEvents = context.Locate.ContentEvents();
-        contentEvents.PublishedContent -= _onContentPublished;
+        if (contentEvents != null) contentEvents.PublishedContent -= _onContentPublished;
         _eventsAttached = false;
     }
 
