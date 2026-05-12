@@ -2,6 +2,8 @@ import { revalidatePath } from "next/cache";
 import { cleanContentUrlSegment } from "@/lib/optimizely";
 
 const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET || "";
+if (!REVALIDATE_SECRET)
+  throw new Error('Env variable "REVALIDATE_SECRET" is not set');
 
 export async function POST(request: Request) {
   console.log("Received revalidate request");
@@ -33,5 +35,5 @@ export async function POST(request: Request) {
 
   revalidatePath(cleaned);
 
-  return Response.json({}, { status: 200 });
+  return Response.json({ revalidated: true }, { status: 200 });
 }
