@@ -31,7 +31,7 @@ export async function BlogListPageComponent({
       <Title>{content.heading?.value}</Title>
       <div dangerouslySetInnerHTML={{ __html: content.intro?.value ?? "" }} />
       <BlogListingPageNavigation
-        entryNavigationId={content.entryNavigation?.value?.id || null}
+        entryNavigationId={content.entryNavigation?.value?.id}
       />
     </Stack>
   );
@@ -40,7 +40,7 @@ export async function BlogListPageComponent({
 async function BlogListingPageNavigation({
   entryNavigationId,
 }: {
-  entryNavigationId: number | null;
+  entryNavigationId?: number;
 }) {
   if (!entryNavigationId) return null;
 

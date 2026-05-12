@@ -10,7 +10,7 @@ export const NavBar = async () => {
   const startPage = await getStartPage();
   if (!isStartPage(startPage)) throw new Error("No start page found");
 
-  if (!startPage.topNavigation.value.id) return null;
+  if (!startPage.topNavigation?.value?.id) return null;
 
   const topNavigation = await getContentById(startPage.topNavigation.value.id);
   if (!isNavigationBlock(topNavigation))
