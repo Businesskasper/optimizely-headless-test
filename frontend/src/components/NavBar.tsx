@@ -19,7 +19,7 @@ export const NavBar = async () => {
     );
 
   return (
-    <Group>
+    <Group justify="flex-end" m="md">
       <NavigationBlockRenderer block={topNavigation} />
     </Group>
   );

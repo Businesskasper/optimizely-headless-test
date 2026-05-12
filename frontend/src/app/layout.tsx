@@ -17,9 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <Container size="md" py="xl">
+          <Container strategy="grid">
             <NavBar />
-            <Divider mb="lg" />
+            <Divider data-breakout mb="lg" />
             {children}
           </Container>
         </Providers>
