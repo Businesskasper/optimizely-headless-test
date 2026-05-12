@@ -46,7 +46,7 @@ public class ContentPublishedNotifier : IInitializableModule
         if (string.IsNullOrEmpty(friendlyUrl)) return;
 
         _logger.LogInformation("Received update on path \"{path}\"", friendlyUrl);
-        _frontendClient.RevalidatePath(friendlyUrl).GetAwaiter().GetResult();
+        _frontendClient.RevalidatePath(friendlyUrl);
         _logger.LogDebug("Revalidated!");
     }
 }

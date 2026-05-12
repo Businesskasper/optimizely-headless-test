@@ -27,7 +27,15 @@ public class FrontendClient : IFrontendClient
     public async Task RevalidatePath(string path)
     {
         _logger.LogInformation("Revalidate {path}", path);
-        await _httpClient.PostAsync(QueryHelpers.AddQueryString("api/revalidate", "path", path), null);
+        try
+        {
+            await _httpClient.PostAsync(QueryHelpers.AddQueryString("api/revalidate", "path", path), null);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "RevalidatePath failed for path: \"${path}\"", path);
+            throw;
+        }
     }
 }
 
