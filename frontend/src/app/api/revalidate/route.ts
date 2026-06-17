@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     return Response.json(
       {
         message:
-          'Header "secret" was not included in the request or does not match the revalidation secret',
+          'Header "X-Api-Key" was not included in the request or does not match the revalidation secret',
       },
       { status: 401 },
     );
